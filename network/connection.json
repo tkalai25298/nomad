@@ -1,0 +1,5 @@
+{
+    "address": "peer0.service.consul:7053", 
+    "dial_timeout": "10s",
+    "tls_required": false
+}

@@ -1,0 +1,35 @@
+version: '2'
+
+networks:
+  cpu:
+
+services:
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:2.1.1
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.service.consul:7051
+      - CORE_PEER_LOCALMSPID=ngpMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/ngp-cpu-network/users/Admin@ngp-cpu-network/msp
+      - CORE_PEER_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto
+      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts/
+      - ./../chaincode:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode
+      - ./connection.json:/opt/gopath/src/github.com/hyperledger/fabric/peer/connection.json
+      - ./metadata.json:/opt/gopath/src/github.com/hyperledger/fabric/peer/metadata.json
+
+    networks:
+      - cpu
+  
+
+
